@@ -7,7 +7,8 @@ from utilities.resources import *
 config = getConfig()
 url = config['API']['endPoint'] + ApiResources.addBook
 header = {'Content-Type': 'application/json'}
-addBook_response = requests.post(url, json=addBookPayload('yhui'), headers= header,)
+query = "select * from Books"
+addBook_response = requests.post(url, json=buildPayloadFromBD(query), headers= header,)
 
 print(addBook_response.json())
 response_json = addBook_response.json()
@@ -29,7 +30,13 @@ assert res_json['msg'] == 'book is successfully deleted'
 
 
 #Authentication
+se = requests.session()
+se.auth = auth=('eee-eee', getPassword())
 url = 'https://api.github.com/user'
-gitHub_response = requests.get(url, auth=('eee-eee', getPassword()))
+gitHub_response = se.get(url)
 
 print(gitHub_response.status_code)
+
+url2 = 'https://api.github.com/user/repos'
+reponse2 = requests.get(url2, auth=('eee-eee', getPassword()))
+print(reponse2.status_code)
