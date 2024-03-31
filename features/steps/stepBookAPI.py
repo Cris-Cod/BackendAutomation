@@ -11,7 +11,7 @@ def step_impl(context):
     config = getConfig()
     context.url = config['API']['endPoint'] + ApiResources.addBook
     context.header = {'Content-Type': 'application/json'}
-    context.payload = addBookPayload('oiu')
+    context.payload = addBookPayload('oiu', 114)
 
 @when('we execute the Addbook PostAPI method')
 def step_impl(context):
@@ -26,3 +26,11 @@ def step_impl(context):
     context.bookId = response_json['ID']
     print(context.bookId)
     assert response_json['Msg'] == 'successfully added'
+
+
+@given('the book details which {isbn} and {aisle}')
+def step_impl(context, isbn, aisle):
+    config = getConfig()
+    context.url = config['API']['endPoint'] + ApiResources.addBook
+    context.header = {'Content-Type': 'application/json'}
+    context.payload = addBookPayload(isbn, aisle)
